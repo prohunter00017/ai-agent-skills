@@ -7,15 +7,19 @@ tokens.txt
 .env.local
 .env.*.local
 
-# Scanner output (when skills are run locally)
+# Scanner output (when skills are run locally) — never commit found keys
 keys.txt
 **/keys.txt
+working_keys.txt
+**/working_keys.txt
 found_keys.json
 **/found_keys.json
 scan_progress.json
 **/scan_progress.json
 validation_report.json
 **/validation_report.json
+credentials.json
+**/credentials.json
 
 # OS / editor
 .DS_Store

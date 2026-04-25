@@ -5,7 +5,7 @@
 set -e
 
 echo "================================================================"
-echo "  Pinterest Automation Skills — content-only skills repository"
+echo "  AI Agent Skills — content-only skills repository"
 echo "================================================================"
 echo
 echo "Available skills (each is a single SKILL.md file):"
@@ -22,7 +22,7 @@ done
 
 echo
 echo "Install any skill into your agent with:"
-echo "  npx skills add prohunter00017/pinterest-automation-skills@<skill-name>"
+echo "  npx skills add prohunter00017/ai-agent-skills@<skill-name>"
 echo
 echo "See README.md for full details."
 echo

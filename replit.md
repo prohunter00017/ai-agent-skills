@@ -1,4 +1,4 @@
-# Pinterest Automation Skills
+# AI Agent Skills
 
 ## Overview
 
@@ -21,10 +21,10 @@ A repository of AI agent skills (in the [agentskills.io](https://agentskills.io/
 
 | Skill | Path | Install |
 |-------|------|---------|
-| pinterest-api | `skills/pinterest-api/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-api` |
-| pinterest-csv | `skills/pinterest-csv/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-csv` |
-| pinterest-workflows | `skills/pinterest-workflows/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-workflows` |
-| KeysGithubScanner | `skills/KeysGithubScanner/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@KeysGithubScanner` |
+| pinterest-api | `skills/pinterest-api/SKILL.md` | `npx skills add prohunter00017/ai-agent-skills@pinterest-api` |
+| pinterest-csv | `skills/pinterest-csv/SKILL.md` | `npx skills add prohunter00017/ai-agent-skills@pinterest-csv` |
+| pinterest-workflows | `skills/pinterest-workflows/SKILL.md` | `npx skills add prohunter00017/ai-agent-skills@pinterest-workflows` |
+| KeysGithubScanner | `skills/KeysGithubScanner/SKILL.md` | `npx skills add prohunter00017/ai-agent-skills@KeysGithubScanner` |
 
 ## Adding a New Skill
 

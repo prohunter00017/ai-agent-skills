@@ -1,21 +1,21 @@
-# Pinterest Automation Skills
+# AI Agent Skills
 
-AI agent skills for the [Pinterest Automation Dashboard](https://github.com/prohunter00017/pinterest-automation-web) and the [KeysGithubScanner](#keysgithubscanner) toolkit. Install into Claude Code, Cursor, Replit Agent, or any other agent that supports the [agentskills.io](https://agentskills.io/) format with a single command.
+A collection of [agentskills.io](https://agentskills.io/)-format skills for AI agents — covering the [Pinterest Automation Dashboard](https://github.com/prohunter00017/pinterest-automation-web) and the KeysGithubScanner toolkit. Install into Claude Code, Cursor, Replit Agent, or any other compatible agent with a single command.
 
 ## Install
 
 ```bash
 # Full API reference (endpoints, auth, accounts, boards, pins, proxies, scheduling)
-npx skills add prohunter00017/pinterest-automation-skills@pinterest-api
+npx skills add prohunter00017/ai-agent-skills@pinterest-api
 
 # CSV and upload file formats (pins, boards, save queue, cookies ZIP)
-npx skills add prohunter00017/pinterest-automation-skills@pinterest-csv
+npx skills add prohunter00017/ai-agent-skills@pinterest-csv
 
 # Step-by-step workflow recipes (onboarding, bulk scheduling, monitoring)
-npx skills add prohunter00017/pinterest-automation-skills@pinterest-workflows
+npx skills add prohunter00017/ai-agent-skills@pinterest-workflows
 
 # Guide for building new GitHub API-key scanners (KeysGithubScanner toolkit)
-npx skills add prohunter00017/pinterest-automation-skills@KeysGithubScanner
+npx skills add prohunter00017/ai-agent-skills@KeysGithubScanner
 ```
 
 Each skill installs as a `SKILL.md` file under your agent's skills directory and is loaded on-demand when the agent decides it's relevant.
@@ -42,13 +42,13 @@ Some skills need credentials. Set these as environment variables in whatever env
 If you prefer one package containing all skills with a CLI installer:
 
 ```bash
-npx pinterest-automation-skills install --claude    # → .claude/skills/pinterest-automation/
-npx pinterest-automation-skills install --cursor    # → .cursor/rules/pinterest-automation/
-npx pinterest-automation-skills install --replit    # → .local/skills/pinterest-automation/
-npx pinterest-automation-skills install --dir ./skills
+npx ai-agent-skills install --claude    # → .claude/skills/ai-agent-skills/
+npx ai-agent-skills install --cursor    # → .cursor/rules/ai-agent-skills/
+npx ai-agent-skills install --replit    # → .local/skills/ai-agent-skills/
+npx ai-agent-skills install --dir ./skills
 ```
 
-See [`pinterest-automation-skills` on npm](https://www.npmjs.com/package/pinterest-automation-skills).
+See [`ai-agent-skills` on npm](https://www.npmjs.com/package/ai-agent-skills).
 
 ## License
 
