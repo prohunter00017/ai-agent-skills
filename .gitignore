@@ -1,0 +1,29 @@
+# GitHub Personal Access Tokens — never commit
+tokens.txt
+**/tokens.txt
+
+# Local secrets / env files
+.env
+.env.local
+.env.*.local
+
+# Scanner output (when skills are run locally)
+keys.txt
+**/keys.txt
+found_keys.json
+**/found_keys.json
+scan_progress.json
+**/scan_progress.json
+validation_report.json
+**/validation_report.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*

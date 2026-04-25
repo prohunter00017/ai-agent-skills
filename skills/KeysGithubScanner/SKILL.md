@@ -46,7 +46,7 @@ Each scanner is self-contained in a `{service}-scanner/` directory.
 ├── config.py           # API settings & search queries
 ├── scanner_fast.py     # Parallel GitHub scanner
 ├── validator.py        # (Optional) Key validator
-├── tokens.txt          # GitHub PATs (auto-created)
+├── tokens.txt          # GitHub PATs — fallback only; prefer GITHUB_PERSONAL_ACCESS_TOKEN env var
 ├── keys.txt            # Found API keys
 ├── found_keys.json     # Keys with metadata
 ├── scan_progress.json  # Resume tracking
@@ -225,16 +225,29 @@ class ServiceFastScanner:
         self.session = requests.Session()
 
     def load_github_tokens(self) -> List[str]:
-        if not os.path.exists(TOKENS_FILE):
-            print(f"{Fore.RED}Error: {TOKENS_FILE} not found!")
-            sys.exit(1)
-        with open(TOKENS_FILE, 'r') as f:
-            tokens = [line.strip() for line in f if line.strip() and not line.startswith('#')]
-        if not tokens:
-            print(f"{Fore.RED}No tokens found in {TOKENS_FILE}")
-            sys.exit(1)
-        print(f"{Fore.GREEN}Loaded {len(tokens)} GitHub tokens")
-        return tokens
+        # 1. Prefer the GITHUB_PERSONAL_ACCESS_TOKEN environment variable.
+        #    Supports a single token or several comma/newline-separated tokens.
+        env_value = os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN", "").strip()
+        if env_value:
+            tokens = [t.strip() for t in re.split(r"[,\n]", env_value) if t.strip()]
+            if tokens:
+                print(f"{Fore.GREEN}Loaded {len(tokens)} GitHub token(s) from "
+                      f"GITHUB_PERSONAL_ACCESS_TOKEN")
+                return tokens
+
+        # 2. Fallback: read tokens from tokens.txt (one per line, # for comments).
+        if os.path.exists(TOKENS_FILE):
+            with open(TOKENS_FILE, 'r') as f:
+                tokens = [line.strip() for line in f
+                          if line.strip() and not line.startswith('#')]
+            if tokens:
+                print(f"{Fore.GREEN}Loaded {len(tokens)} GitHub tokens from {TOKENS_FILE}")
+                return tokens
+
+        print(f"{Fore.RED}Error: no GitHub tokens found.")
+        print(f"{Fore.YELLOW}Set the GITHUB_PERSONAL_ACCESS_TOKEN environment variable, "
+              f"or add tokens to {TOKENS_FILE} (one per line).")
+        sys.exit(1)
 
     def load_progress(self) -> Dict:
         if os.path.exists(SCAN_PROGRESS_FILE):
@@ -488,21 +501,34 @@ def print_banner():
     print(f"{Fore.YELLOW}Example: YOUR_EXAMPLE_KEY{Style.RESET_ALL}\n")
 
 def check_tokens():
+    # Prefer the env var.
+    env_value = os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN", "").strip()
+    if env_value:
+        import re
+        tokens = [t.strip() for t in re.split(r"[,\n]", env_value) if t.strip()]
+        if tokens:
+            print(f"{Fore.GREEN}Found {len(tokens)} GitHub token(s) "
+                  f"in GITHUB_PERSONAL_ACCESS_TOKEN")
+            return True
+
+    # Fallback to tokens.txt.
     if not os.path.exists("tokens.txt"):
-        print(f"{Fore.RED}tokens.txt not found!")
-        print("Creating tokens.txt...")
+        print(f"{Fore.YELLOW}No GITHUB_PERSONAL_ACCESS_TOKEN set and tokens.txt not found.")
+        print("Creating tokens.txt as a fallback...")
         with open("tokens.txt", 'w') as f:
-            f.write("# Add your GitHub tokens here, one per line\n")
+            f.write("# Add your GitHub tokens here, one per line.\n")
+            f.write("# Or, recommended: set the GITHUB_PERSONAL_ACCESS_TOKEN env var instead.\n")
         return False
 
     with open("tokens.txt", 'r') as f:
         tokens = [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
     if not tokens:
-        print(f"{Fore.RED}No tokens found in tokens.txt")
+        print(f"{Fore.RED}No tokens found. Set GITHUB_PERSONAL_ACCESS_TOKEN "
+              f"or add tokens to tokens.txt.")
         return False
 
-    print(f"{Fore.GREEN}Found {len(tokens)} GitHub tokens")
+    print(f"{Fore.GREEN}Found {len(tokens)} GitHub tokens in tokens.txt")
     return True
 
 def get_stats():
@@ -778,8 +804,14 @@ process.env.SERVICE_API_KEY
 
 ### Test Data Preparation
 
-1. Create `tokens.txt` with GitHub PATs (one per line)
-2. Add a known test API key to `keys.txt` for validation testing
+1. Provide GitHub PATs in **either** of the following ways (env var preferred):
+   - **Recommended:** set the `GITHUB_PERSONAL_ACCESS_TOKEN` environment variable.
+     For multiple tokens, separate them with commas or newlines:
+     ```bash
+     export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_xxx,ghp_yyy,ghp_zzz"
+     ```
+   - **Fallback:** create a `tokens.txt` file with one token per line.
+2. Add a known test API key to `keys.txt` for validation testing.
 
 ### Run Tests
 
@@ -809,7 +841,7 @@ python run.py
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| "No tokens found" | tokens.txt missing or empty | Create tokens.txt with GitHub PATs |
+| "No tokens found" | No env var and tokens.txt missing/empty | Set `GITHUB_PERSONAL_ACCESS_TOKEN` env var, or add tokens to tokens.txt |
 | "403 Forbidden" | Rate limit exceeded | Wait or add more tokens |
 | "No keys found" | Pattern incorrect | Verify regex in scanner_fast.py |
 | "All queries processed" | Progress file not cleared | Delete scan_progress.json |
@@ -891,7 +923,8 @@ Before declaring a scanner complete:
 | `scanner_fast.py` | GitHub scanning | Yes |
 | `run.py` | Interactive menu | Yes |
 | `validator.py` | Key validation | No (custom) |
-| `tokens.txt` | GitHub PATs | Auto-created |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` env var | GitHub PATs (preferred) | Yes — or `tokens.txt` |
+| `tokens.txt` | GitHub PATs (fallback) | Auto-created if env var not set |
 
 ---
 

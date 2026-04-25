@@ -20,6 +20,14 @@ npx skills add prohunter00017/pinterest-automation-skills@KeysGithubScanner
 
 Each skill installs as a `SKILL.md` file under your agent's skills directory and is loaded on-demand when the agent decides it's relevant.
 
+## Required Environment Variables
+
+Some skills need credentials. Set these as environment variables in whatever environment runs the skill:
+
+| Variable | Required by | Description |
+|----------|-------------|-------------|
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | `KeysGithubScanner` | One or more GitHub Personal Access Tokens used to query the GitHub Search API. For multiple tokens, separate them with commas or newlines (e.g. `ghp_xxx,ghp_yyy`). The skill falls back to a local `tokens.txt` file if the env var is not set. |
+
 ## Skills
 
 | Skill | What it covers |

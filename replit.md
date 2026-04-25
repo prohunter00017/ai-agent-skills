@@ -38,6 +38,14 @@ A repository of AI agent skills (in the [agentskills.io](https://agentskills.io/
    ```
 3. Add the skill to the table in `README.md` with the install command.
 
+## Required Environment Variables
+
+| Variable | Used by | Description |
+|----------|---------|-------------|
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | `KeysGithubScanner` | One or more GitHub PATs (comma- or newline-separated) for the GitHub Search API. The skill falls back to a `tokens.txt` file if the env var is not set. |
+
+Set this as a Replit Secret (not a plain env var) so it stays out of the repository.
+
 ## Notes
 
 - This repo has no build step, no server, and no runtime dependencies — the skills are plain Markdown.
