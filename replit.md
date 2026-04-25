@@ -2,46 +2,43 @@
 
 ## Overview
 
-A documentation web viewer for the [Pinterest Automation Skills](https://github.com/prohunter00017/pinterest-automation-skills) — a set of AI agent skills (agentskills.io format) for the Pinterest Automation Dashboard.
+A repository of AI agent skills (in the [agentskills.io](https://agentskills.io/) format) that other agents can install via `npx skills add ...`. This repo is **content-only** — there is no application to run. Each skill is a single `SKILL.md` file with frontmatter metadata that an agent loads on demand.
 
 ## Project Structure
 
 ```
 /
-├── server.js              # Simple Node.js HTTP server (no dependencies)
-├── README.md              # Project overview and install instructions
+├── README.md                                # Install instructions and skill index
 ├── skills/
-│   ├── pinterest-api/
-│   │   └── SKILL.md       # Full REST API reference
-│   ├── pinterest-csv/
-│   │   └── SKILL.md       # CSV and file upload format reference
-│   └── pinterest-workflows/
-│       └── SKILL.md       # Step-by-step automation recipes
+│   ├── pinterest-api/SKILL.md               # Full REST API reference
+│   ├── pinterest-csv/SKILL.md               # CSV and file upload format reference
+│   ├── pinterest-workflows/SKILL.md         # Step-by-step automation recipes
+│   └── KeysGithubScanner/SKILL.md           # Guide for creating new GitHub API-key scanners
+└── show-skills.sh                           # Helper script that lists the available skills
 ```
 
-## Architecture
+## Skills Available
 
-- **Runtime**: Node.js 20 (no npm dependencies — uses only Node.js built-ins)
-- **Server**: `server.js` — a plain `http` module server that reads the Markdown skill files and renders them as HTML
-- **Port**: 5000 (0.0.0.0)
-- **Markdown rendering**: Custom inline renderer (no external libraries)
+| Skill | Path | Install |
+|-------|------|---------|
+| pinterest-api | `skills/pinterest-api/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-api` |
+| pinterest-csv | `skills/pinterest-csv/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-csv` |
+| pinterest-workflows | `skills/pinterest-workflows/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@pinterest-workflows` |
+| KeysGithubScanner | `skills/KeysGithubScanner/SKILL.md` | `npx skills add prohunter00017/pinterest-automation-skills@KeysGithubScanner` |
 
-## Running the App
+## Adding a New Skill
 
-```bash
-node server.js
-```
+1. Create a directory under `skills/` (e.g. `skills/my-new-skill/`).
+2. Add a `SKILL.md` file with YAML frontmatter:
+   ```
+   ---
+   name: my-new-skill
+   description: One-line description of what this skill helps an agent do.
+   ---
+   ```
+3. Add the skill to the table in `README.md` with the install command.
 
-The server starts on `http://0.0.0.0:5000` and serves the skills content as a styled web page with navigation tabs for each skill.
+## Notes
 
-## Skills Content
-
-| Skill | Path | Description |
-|-------|------|-------------|
-| pinterest-api | `skills/pinterest-api/SKILL.md` | REST API reference for the dashboard |
-| pinterest-csv | `skills/pinterest-csv/SKILL.md` | CSV/file upload format definitions |
-| pinterest-workflows | `skills/pinterest-workflows/SKILL.md` | Automation workflow recipes |
-
-## Deployment
-
-Configured for autoscale deployment running `node server.js`.
+- This repo has no build step, no server, and no runtime dependencies — the skills are plain Markdown.
+- The Replit workflow simply prints the list of available skills and keeps the project alive for inspection.
